@@ -5,6 +5,7 @@ from flask import Flask, g
 from flask_oidc import OpenIDConnect
 import requests
 from user_mgmt import logout_name
+from servico_task_operator import processos
 
 
 keycloak_openid = KeycloakOpenID(server_url="http://localhost:18080/auth/",
@@ -49,6 +50,8 @@ def hello_me():
     username = info.get('preferred_username')
     email = info.get('email')
     user_id = info.get('sub')
+
+    print("\n"*10, processos())
 
     if user_id in oidc.credentials_store:
         try:
