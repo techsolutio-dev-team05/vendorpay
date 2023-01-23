@@ -50,28 +50,31 @@ def hello_me():
     username = info.get('preferred_username')
     email = info.get('email')
     user_id = info.get('sub')
+    
+    processos_=processos().json()
+    print("\n"*10, processos_)
 
-    print("\n"*10, processos())
-
-    if user_id in oidc.credentials_store:
-        try:
-            from oauth2client.client import OAuth2Credentials
-            access_token = OAuth2Credentials.from_json(oidc.credentials_store[user_id]).access_token
-            print('access_token=<%s>') % access_token
-            headers = {'Authorization': 'Bearer %s' % (access_token)}
-            # YOLO
-            greeting = requests.get('http://localhost:8080/greeting', headers=headers).text
-        except:
-            print("Could not access greeting-service")
-            greeting = "Hello %s" % username
+    # if user_id in oidc.credentials_store:
+    #     try:
+    #         from oauth2client.client import OAuth2Credentials
+    #         access_token = OAuth2Credentials.from_json(oidc.credentials_store[user_id]).access_token
+    #         # print(access_token)
+    #         headers = {'Authorization': f'Bearer {access_token}','Content-Type': 'application/json',
+    #                   'accept': 'application/json'}
+    #         # YOLO
+    #         greeting = requests.get('http://localhost:18080/greeting', headers=headers).text
+    #         print("\n"*20, greeting)
+    #     except:
+    #         print("Could not access greeting-service")
+    #         greeting = "Hello %s" % username
     
 
-    return ("""%s your email is %s and your user_id is %s!
+    return ("""Processos: %s your email is %s and your user_id is %s!
                <ul>
                  <li><a href="/">Home</a></li>
                  <li><a href="//localhost:8082/auth/realms/camunda-platform/account?referrer=flask-app&referrer_uri=http://localhost:5000/private&">Account</a></li>
                 </ul>""" %
-            (greeting, email, user_id))
+            (str(processos_), email, user_id))
 
 
 @app.route('/api', methods=['POST'])
