@@ -2,7 +2,7 @@ import requests
 import pprint
 
 header={'Content-Type': 'application/x-www-form-urlencoded'}
-data={'client_id': "camunda-identity", 'client_secret': '5KsuHVUtLLUtXBvFyO4M74dGxqIxxo1W',
+data={'client_id': "connectors", 'client_secret': 'c0nn3ct0rsAr3Aw3s0me',
       'grant_type':'client_credentials'}
 token=requests.post(url='http://localhost:18080/auth/realms/camunda-platform/protocol/openid-connect/token', 
                    headers=header, data=data)
@@ -19,8 +19,7 @@ def processos():
         
     processos=requests.post(url='http://localhost:8081/v1/process-instances/search', 
                headers=access_token_header, json=json_post)
-               
-            
+   
     return processos
 
 if __name__=="__main__":

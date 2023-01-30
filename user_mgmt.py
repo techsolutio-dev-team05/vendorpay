@@ -8,7 +8,7 @@ keycloak_admin = KeycloakAdmin(server_url="http://localhost:18080/auth/",
                         password='admin',
                         realm_name="camunda-platform",
                         client_id="camunda-identity",
-                        client_secret_key="5KsuHVUtLLUtXBvFyO4M74dGxqIxxo1W",
+                        client_secret_key="F2WtkLTyma5RM9Loe5gOp9BTkicnjXnB",
                         verify=True)
 
 
@@ -37,3 +37,7 @@ def logout_name(user_name):
 
 
 # pp.pprint(keycloak_admin.get_realm_roles_of_user(user_id=usuario))
+
+if __name__=="__main__":
+    usuario=add_user()
+    print(usuario)

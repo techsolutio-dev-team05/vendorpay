@@ -11,14 +11,14 @@ with grpc.insecure_channel("localhost:26500") as channel:
     # print(topology)
 
     # deploy a process definition
-    with open("/home/alfaer/Documents/camunda/microservice orchestration.bpmn", "rb") as process_definition_file:
+    with open("/home/alfaer/Documents/camunda/Preparing Dinner.bpmn", "rb") as process_definition_file:
         process_definition = process_definition_file.read()
         process = gateway_pb2.ProcessRequestObject(
-            name="microservice orchestration.bpmn",
-            definition=process_definition
-        )
-    stub.DeployProcess(
-        gateway_pb2.DeployProcessRequest(
+            name="Preparing Dinner.bpmn",
+            definition=process_definition)
+        
+        stub.DeployProcess(
+            gateway_pb2.DeployProcessRequest(
             processes=[process]
         )
     )
@@ -27,27 +27,27 @@ with grpc.insecure_channel("localhost:26500") as channel:
     variables = {"entrada": 5}
     stub.CreateProcessInstance(
         gateway_pb2.CreateProcessInstanceRequest(
-            bpmnProcessId="microservice-orchestration",
+            bpmnProcessId="preparing-dinner",
             version=-1,
             variables=json.dumps(variables)
         )
     )
 
-    # start a worker
-    activate_jobs_response = stub.ActivateJobs(
-        gateway_pb2.ActivateJobsRequest(
-            type="orchestrate-something",
-            worker="Python worker",
-            timeout=60000,
-            maxJobsToActivate=32
-        )
-    )
-    for response in activate_jobs_response:
-        for job in response.jobs:
-            try:
-                print(job.variables)
-                stub.CompleteJob(gateway_pb2.CompleteJobRequest(jobKey=job.key, variables=json.dumps({"saida": 6})))
-                logging.info("Job Completed")
-            except Exception as e:
-                stub.FailJob(gateway_pb2.FailJobRequest(jobKey=job.key))
-                logging.info(f"Job Failed {e}")
+    # # start a worker
+    # activate_jobs_response = stub.ActivateJobs(
+    #     gateway_pb2.ActivateJobsRequest(
+    #         type="orchestrate-something",
+    #         worker="Python worker",
+    #         timeout=60000,
+    #         maxJobsToActivate=32
+    #     )
+    # )
+    # for response in activate_jobs_response:
+    #     for job in response.jobs:
+    #         try:
+    #             print(job.variables)
+    #             stub.CompleteJob(gateway_pb2.CompleteJobRequest(jobKey=job.key, variables=json.dumps({"saida": 6})))
+    #             logging.info("Job Completed")
+    #         except Exception as e:
+    #             stub.FailJob(gateway_pb2.FailJobRequest(jobKey=job.key))
+    #             logging.info(f"Job Failed {e}")
